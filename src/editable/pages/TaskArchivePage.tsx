@@ -9,6 +9,7 @@ import { taskPageMetadata } from '@/config/site.content'
 import { taskPageVoices } from '@/editable/content/task-pages.content'
 import { EditableSiteShell } from '@/editable/shell/EditableSiteShell'
 import { getTaskTheme, taskThemeStyle } from '@/editable/theme/task-themes'
+import { Ads } from '@/lib/ads'
 
 export const revalidate = 3
 
@@ -68,6 +69,24 @@ const taskGrid: Record<TaskKey, string> = {
 // Shared premium surface: hairline border, soft radius, smooth lift on hover.
 const cardBase = 'group block rounded-[var(--tk-radius)] border border-[var(--tk-line)] bg-[var(--tk-surface)] transition duration-500 hover:-translate-y-1.5 hover:shadow-[0_32px_72px_rgba(15,23,42,0.14)]'
 
+const archiveAds: Record<TaskKey, ['header' | 'sidebar' | 'in-feed' | 'article-bottom' | 'footer', 'header' | 'sidebar' | 'in-feed' | 'article-bottom' | 'footer']> = {
+  article: ['header', 'in-feed'],
+  listing: ['header', 'sidebar'],
+  classified: ['in-feed', 'footer'],
+  image: ['header', 'article-bottom'],
+  sbm: ['sidebar', 'footer'],
+  pdf: ['in-feed', 'article-bottom'],
+  profile: ['header', 'footer'],
+}
+
+function AdBand({ slot }: { slot: 'header' | 'sidebar' | 'in-feed' | 'article-bottom' | 'footer' }) {
+  return (
+    <div className="mx-auto max-w-6xl px-4 py-6">
+      <Ads slot={slot} showLabel eager className="mx-auto w-full" />
+    </div>
+  )
+}
+
 export async function EditableTaskArchiveRoute({
   task,
   searchParams,
@@ -92,26 +111,26 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
   const page = pagination.page || 1
   const label = taskConfig?.label || task
   const categoryLabel = category === 'all' ? 'All categories' : CATEGORY_OPTIONS.find((item) => item.slug === category)?.name || category
+  const isRequestedArchive = task === 'article' || task === 'listing'
 
   return (
     <EditableSiteShell>
       <main style={taskThemeStyle(task)} className="min-h-screen bg-[var(--tk-bg)] text-[var(--tk-text)]">
-        <header className="relative overflow-hidden border-b border-[var(--tk-line)]">
-          <div className="pointer-events-none absolute inset-x-0 -top-40 h-96 bg-[radial-gradient(60%_60%_at_50%_0%,var(--tk-glow),transparent_70%)]" />
-          <div className="relative mx-auto max-w-[var(--editable-container)] px-6 py-20 sm:py-28 lg:px-8">
+        <header className="editable-angle relative overflow-hidden bg-[var(--slot4-warm)]">
+          <div className="relative mx-auto max-w-[var(--editable-container)] px-6 py-20 sm:py-24 lg:px-8">
             <div className="flex items-center gap-3 text-[11px] font-medium uppercase tracking-[0.34em] text-[var(--tk-accent)]">
               <span>{theme.kicker}</span>
               <span className="h-1 w-1 rounded-full bg-[var(--tk-accent)] opacity-50" />
               <span className="text-[var(--tk-muted)]">{label}</span>
             </div>
-            <h1 className="editable-display mt-6 max-w-3xl text-balance text-[2.5rem] font-semibold leading-[1.06] tracking-[-0.03em] sm:text-5xl lg:text-6xl">
+            <h1 className="editable-display mt-6 max-w-3xl text-balance text-[2.5rem] font-bold leading-[1.06] tracking-normal sm:text-5xl lg:text-6xl">
               {voice?.headline || `Browse ${label}`}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[var(--tk-muted)]">{voice?.description || theme.note}</p>
             {voice?.chips?.length ? (
               <div className="mt-8 flex flex-wrap gap-2.5">
                 {voice.chips.map((chip) => (
-                  <span key={chip} className="rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] px-3.5 py-1.5 text-xs font-medium text-[var(--tk-muted)]">{chip}</span>
+                  <span key={chip} className="border-l-2 border-[var(--slot4-accent)] bg-white px-3.5 py-1.5 text-xs font-medium text-[var(--tk-muted)]">{chip}</span>
                 ))}
               </div>
             ) : null}
@@ -125,7 +144,7 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
                   <select
                     name="category"
                     defaultValue={category}
-                    className="h-11 appearance-none rounded-full border border-[var(--tk-line)] bg-[var(--tk-surface)] pl-4 pr-10 text-sm font-medium text-[var(--tk-text)] outline-none transition focus:border-[var(--tk-accent)]"
+                    className="h-11 appearance-none rounded-md border border-[var(--tk-line)] bg-white pl-4 pr-10 text-sm font-medium text-[var(--tk-text)] outline-none transition focus:border-[var(--tk-accent)]"
                     aria-label={voice?.filterLabel || 'Filter category'}
                   >
                     <option value="all">All categories</option>
@@ -133,11 +152,13 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
                   </select>
                   <ChevronDown className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--tk-muted)]" />
                 </div>
-                <button className="inline-flex h-11 items-center rounded-full bg-[var(--tk-accent)] px-5 text-sm font-semibold text-[var(--tk-on-accent)] transition hover:opacity-90">Apply</button>
+                <button className="inline-flex h-11 items-center rounded-md bg-[var(--editable-cta-bg)] px-5 text-sm font-semibold text-white transition hover:opacity-90">Apply</button>
               </form>
             </div>
           </div>
         </header>
+        {task === 'article' ? <AdBand slot="in-feed" /> : null}
+        {!isRequestedArchive ? <AdBand slot={archiveAds[task][0]} /> : null}
 
         <section className="mx-auto max-w-[var(--editable-container)] px-6 py-16 sm:py-20 lg:px-8">
           {posts.length ? (
@@ -160,6 +181,8 @@ export function TaskArchiveView({ task, posts, pagination, category, basePath }:
             </nav>
           ) : null}
         </section>
+        {task === 'listing' ? <AdBand slot="footer" /> : null}
+        {!isRequestedArchive ? <AdBand slot={archiveAds[task][1]} /> : null}
       </main>
     </EditableSiteShell>
   )
@@ -223,8 +246,8 @@ function ArticleArchiveCard({ post, href, index }: { post: SitePost; href: strin
   const image = getImage(post)
   const category = getCategory(post, 'Article')
   return (
-    <Link href={href} className={`${cardBase} overflow-hidden`}>
-      <div className="aspect-[16/10] overflow-hidden bg-[var(--tk-raised)]">
+    <Link href={href} className={`${cardBase} overflow-hidden ${index === 0 ? 'md:col-span-2 md:grid md:grid-cols-[1.15fr_0.85fr] xl:col-span-3' : ''}`}>
+      <div className={`${index === 0 ? 'min-h-72' : 'aspect-[16/10]'} overflow-hidden bg-[var(--tk-raised)]`}>
         <img src={image} alt="" className="h-full w-full object-cover transition duration-700 group-hover:scale-[1.03]" />
       </div>
       <div className="p-6 sm:p-7">
@@ -247,8 +270,8 @@ function ListingArchiveCard({ post, href }: { post: SitePost; href: string }) {
   const phone = getField(post, ['phone', 'telephone', 'mobile'])
   const website = getField(post, ['website', 'url'])
   return (
-    <Link href={href} className={`${cardBase} flex items-center gap-5 p-5 sm:p-6`}>
-      <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[1rem] border border-[var(--tk-line)] bg-[var(--tk-raised)]">
+    <Link href={href} className={`${cardBase} flex items-center gap-5 border-l-4 border-l-[var(--slot4-accent)] p-5 sm:p-6`}>
+      <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden border border-[var(--tk-line)] bg-[var(--tk-raised)]">
         {logo ? <img src={logo} alt="" className="h-full w-full object-cover" /> : <BriefcaseBusiness className="h-9 w-9 text-[var(--tk-muted)]" />}
       </div>
       <div className="min-w-0 flex-1">
