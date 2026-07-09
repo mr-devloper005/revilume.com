@@ -12,16 +12,16 @@ export type TaskPageVoice = {
 export const taskPageVoices = {
   article: {
     eyebrow: 'Reading desk',
-    headline: 'Long-form articles with a calmer editorial rhythm.',
-    description: 'Use this page for essays, guides, explainers, and story-led posts. The layout should feel like a publication, not a directory.',
+    headline: 'Articles for clear reading, research, and practical insight.',
+    description: 'Explore essays, guides, explainers, and story-led posts written for readers, professionals, students, and researchers.',
     filterLabel: 'Choose article topic',
-    secondaryNote: 'Reading surfaces need space, hierarchy, and fewer distractions.',
-    chips: ['Editorial pacing', 'Topic filters', 'Long-read friendly'],
+    secondaryNote: 'Clear structure helps each article stay easy to read and revisit.',
+    chips: ['Research friendly', 'Topic filters', 'Long-read friendly'],
   },
   classified: {
     eyebrow: 'Notice board',
     headline: 'Fast-moving classifieds, offers, and time-sensitive posts.',
-    description: 'Classified content should feel quick to scan, practical, and action-oriented with less editorial decoration.',
+    description: 'Browse practical notices, offers, announcements, jobs, and local opportunities in a quick scanning format.',
     filterLabel: 'Filter classified category',
     secondaryNote: 'Prioritize urgency, short summaries, and direct browsing.',
     chips: ['Fast scan', 'Offers', 'Action cues'],
@@ -29,7 +29,7 @@ export const taskPageVoices = {
   sbm: {
     eyebrow: 'Saved resources',
     headline: 'Social bookmarks arranged like curated collections.',
-    description: 'Bookmark pages should feel like shelves of useful resources, tools, references, and collections.',
+    description: 'Find useful resources, tools, references, and saved links gathered for faster discovery.',
     filterLabel: 'Filter collection',
     secondaryNote: 'Curated resources need grouping and calm metadata.',
     chips: ['Collections', 'Resources', 'Reference flow'],
@@ -37,7 +37,7 @@ export const taskPageVoices = {
   profile: {
     eyebrow: 'People and profiles',
     headline: 'Profiles with identity, trust, and reputation cues.',
-    description: 'Profile pages should make people, brands, and entities feel discoverable rather than buried in a generic feed.',
+    description: 'Discover people, brands, professionals, and entities through clear profile cards and useful context.',
     filterLabel: 'Filter profile category',
     secondaryNote: 'Make identity and credibility visible before the grid begins.',
     chips: ['Identity first', 'Trust cues', 'Creator/business cards'],
@@ -45,7 +45,7 @@ export const taskPageVoices = {
   pdf: {
     eyebrow: 'Document library',
     headline: 'PDFs and documents presented as a useful library.',
-    description: 'PDF pages should feel like downloadable guides, reports, files, and reference material instead of normal articles.',
+    description: 'Browse downloadable guides, reports, files, and reference material in one organized document archive.',
     filterLabel: 'Filter document type',
     secondaryNote: 'Document surfaces need archive cues, file context, and clear browsing.',
     chips: ['Documents', 'Guides', 'Archive ready'],
@@ -53,7 +53,7 @@ export const taskPageVoices = {
   listing: {
     eyebrow: 'Business directory',
     headline: 'Business listings built for discovery and comparison.',
-    description: 'Listing pages should behave like a directory with trust cues, metadata, and a practical search rhythm.',
+    description: 'Find businesses, startups, services, and professionals with details that help customers compare and connect.',
     filterLabel: 'Filter business category',
     secondaryNote: 'Prioritize comparison, location, and direct action paths.',
     chips: ['Directory', 'Compare', 'Business discovery'],
@@ -61,7 +61,7 @@ export const taskPageVoices = {
   image: {
     eyebrow: 'Visual gallery',
     headline: 'Image posts with a gallery-first browsing experience.',
-    description: 'Image pages should lead with visual impact, stronger cards, and a portfolio-like rhythm.',
+    description: 'Explore visual posts and galleries with image-led cards that keep discovery easy and engaging.',
     filterLabel: 'Filter visual category',
     secondaryNote: 'Let images carry the page before long text does.',
     chips: ['Gallery', 'Visual-first', 'Portfolio mood'],
